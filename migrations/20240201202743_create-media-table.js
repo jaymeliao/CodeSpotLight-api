@@ -3,7 +3,7 @@ exports.up = function(knex) {
       table.increments('id').primary();;
       table.integer('post_id').unsigned().references('id').inTable('posts').onDelete('CASCADE');
       table.string('media_url').notNullable();
-      table.string('media_tynppe').notNullable(); // 'image' or 'video'
+      table.string('media_type').notNullable(); // 'image' or 'video'
       table.timestamps(true, true);
     });
   };
