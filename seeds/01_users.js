@@ -3,8 +3,8 @@
 exports.seed = async function(knex) {
   await knex('users').del();
   await knex('users').insert([
-    {username: 'johnDoe', email: 'john@example.com', password_hash: 'johndoe1', profile_picture_url: 'https://picsum.photos/seed/picsum/200/300'},
-    {username: 'janeDoe', email: 'jane@example.com', password_hash: 'janedoe2', profile_picture_url: 'https://picsum.photos/seed/picsum/200/300'},
+    {username: 'test1', email: 'test1@example.com', name:"John",password_hash: 'testhash', profile_picture_url: 'https://picsum.photos/seed/picsum/200/300'},
+    {username: 'test2', email: 'test2@example.com', name:"Louie",password_hash: 'testhash', profile_picture_url: 'https://picsum.photos/seed/picsum/200/300'},
     {username: 'user1', email: 'user3@example.com', password_hash: 'hash', self_intro:"hello 1",profile_picture_url: 'https://picsum.photos/seed/picsum/200/300'},
     {username: 'user2', email: 'user4@example.com', password_hash: 'hash', self_intro:"hello 2", profile_picture_url: 'https://picsum.photos/seed/picsum/200/300'},
     {username: 'user3', email: 'user5@example.com', password_hash: 'hash', self_intro:"hello 3", profile_picture_url: 'https://picsum.photos/seed/picsum/200/300'},

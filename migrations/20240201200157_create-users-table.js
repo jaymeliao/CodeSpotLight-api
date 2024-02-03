@@ -4,6 +4,7 @@ exports.up = function (knex) {
     table.string("username").notNullable().unique();
     table.string("email").notNullable().unique();
     table.string("password_hash").notNullable();
+    table.string("name");
     table.string("self_intro");
     table.string("profile_picture_url");
     table.timestamp("created_at").defaultTo(knex.fn.now());

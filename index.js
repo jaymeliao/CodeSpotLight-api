@@ -58,7 +58,7 @@ app.post("/login", async (req, res) => {
     const user = await knex("users").where({ username }).first();
 
     if (user && password === user.password_hash) {
-      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, {
         expiresIn: "24h",
       });
       res.json({ token });
@@ -66,6 +66,7 @@ app.post("/login", async (req, res) => {
       res.status(401).json({ message: "Invalid credentials" });
     }
   } catch (error) {
+    console.log(error)
     res.status(500).json({ message: "Login failed" });
   }
 });
