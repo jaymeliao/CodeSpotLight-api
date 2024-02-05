@@ -38,7 +38,7 @@ exports.seed = async function(knex) {
     {username: 'user10', email: 'user10@example.com', name: "User 10", password_hash: hashedPasswords[9], self_intro: "hello 10", profile_picture_url: 'https://picsum.photos/seed/picsum/200/300'},
     {username: 'user11', email: 'user11@example.com', name: "User 11", password_hash: hashedPasswords[10], self_intro: "hello 11", profile_picture_url: 'https://picsum.photos/seed/picsum/200/300'},
     {username: 'user12', email: 'user12@example.com', name: "User 12", password_hash: hashedPasswords[11], self_intro: "hello 12", profile_picture_url: 'https://picsum.photos/seed/picsum/200/300'},
-    {username: 'joan', email: 'joanzz@example.com', name: "Joan Zao", password_hash: hashedPasswords[12], self_intro: "Hello Joan", profile_picture_url: 'https://picsum.photos/seed/picsum/200/300'},
+    {username: 'joan', email: 'joanzz@example.com', name: "Joan Zao", password_hash: hashedPasswords[12], self_intro: " Hello! I'm Joan, a passionate software engineer with over 5 years of experience specializing in full-stack web development, mobile app development, cloud computing.", profile_picture_url: 'https://picsum.photos/seed/picsum/200/300'},
     
   ]);
 };
