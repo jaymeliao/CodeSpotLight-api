@@ -17,11 +17,12 @@ const userRoutes = require("./routes/users-routes");
 app.use("/users", userRoutes);
 
 app.post("/signup", async (req, res) => {
-  const { username, email, password } = req.body;
+  const { name, username, email, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10); //2^10(1024) rounds of hashing
  // const hashedPassword = password;
   try {
     const insertedIds = await knex("users").insert({
+      name,
       username,
       email,
       password_hash: hashedPassword,
