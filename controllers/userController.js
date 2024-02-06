@@ -37,7 +37,8 @@ const updateUserProfile = async (req, res) => {
   };
 
   if (req.file) {
-    updateObject.profile_picture_url = `http://localhost:8080/uploads/${req.file.filename}`;
+    //updateObject.profile_picture_url = `http://localhost:8080/uploads/${req.file.filename}`;
+    updateObject.profile_picture_url = `${req.file.filename}`;
   }
   try {
     await knex("users").where({ id: userId }).update(updateObject);
