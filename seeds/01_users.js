@@ -28,7 +28,7 @@ exports.seed = async function (knex) {
       password_hash: hashedPasswords[0],
       name: "User 2",
       self_intro:
-        " Hello! I a mpassionate software engineer with over 5 years of experience specializing in full-stack web development, mobile app development, cloud computing.",
+        " Hello! I am passionate software engineer with over 5 years of experience specializing in full-stack web development, mobile app development, cloud computing.",
       profile_picture_url: "pp2.jpeg",
     },
     {
@@ -38,7 +38,7 @@ exports.seed = async function (knex) {
       password_hash: hashedPasswords[0],
       name: "User 3",
       self_intro:
-        " Hello! I a mpassionate software engineer with over 5 years of experience specializing in full-stack web development, mobile app development, cloud computing.",
+        " Hello! I am passionate software engineer with over 5 years of experience specializing in full-stack web development, mobile app development, cloud computing.",
       profile_picture_url: "pp3.jpeg",
     },
     {
@@ -48,7 +48,7 @@ exports.seed = async function (knex) {
       password_hash: hashedPasswords[0],
       name: "User 4",
       self_intro:
-        " Hello! I a mpassionate software engineer with over 5 years of experience specializing in full-stack web development, mobile app development, cloud computing.",
+        " Hello! I am passionate software engineer with over 5 years of experience specializing in full-stack web development, mobile app development, cloud computing.",
       profile_picture_url: "pp4.jpeg",
     },
     {
@@ -58,7 +58,7 @@ exports.seed = async function (knex) {
       password_hash: hashedPasswords[0],
       name: "User 5",
       self_intro:
-        " Hello! I a mpassionate software engineer with over 5 years of experience specializing in full-stack web development, mobile app development, cloud computing.",
+        " Hello! I am passionate software engineer with over 5 years of experience specializing in full-stack web development, mobile app development, cloud computing.",
       profile_picture_url: "pp5.jpeg",
     },
     {
@@ -68,7 +68,7 @@ exports.seed = async function (knex) {
       password_hash: hashedPasswords[0],
       name: "User 6",
       self_intro:
-        " Hello! I a mpassionate software engineer with over 5 years of experience specializing in full-stack web development, mobile app development, cloud computing.",
+        " Hello! I am passionate software engineer with over 5 years of experience specializing in full-stack web development, mobile app development, cloud computing.",
       profile_picture_url: "pp6.jpeg",
     },
     {
@@ -78,7 +78,7 @@ exports.seed = async function (knex) {
       password_hash: hashedPasswords[0],
       name: "User 7",
       self_intro:
-        " Hello! I a mpassionate software engineer with over 5 years of experience specializing in full-stack web development, mobile app development, cloud computing.",
+        " Hello! I am passionate software engineer with over 5 years of experience specializing in full-stack web development, mobile app development, cloud computing.",
       profile_picture_url: "pp7.jpeg",
     },
     {
@@ -88,7 +88,7 @@ exports.seed = async function (knex) {
       password_hash: hashedPasswords[0],
       name: "User 8",
       self_intro:
-        " Hello! I a mpassionate software engineer with over 5 years of experience specializing in full-stack web development, mobile app development, cloud computing.",
+        " Hello! I am passionate software engineer with over 5 years of experience specializing in full-stack web development, mobile app development, cloud computing.",
       profile_picture_url: "pp8.jpeg",
     },
     {
@@ -98,7 +98,7 @@ exports.seed = async function (knex) {
       password_hash: hashedPasswords[0],
       name: "User 9",
       self_intro:
-        " Hello! I a mpassionate software engineer with over 5 years of experience specializing in full-stack web development, mobile app development, cloud computing.",
+        " Hello! I am passionate software engineer with over 5 years of experience specializing in full-stack web development, mobile app development, cloud computing.",
       profile_picture_url: "pp9.jpeg",
     },
     {
@@ -108,7 +108,7 @@ exports.seed = async function (knex) {
       password_hash: hashedPasswords[0],
       name: "User 10",
       self_intro:
-        " Hello! I a mpassionate software engineer with over 5 years of experience specializing in full-stack web development, mobile app development, cloud computing.",
+        " Hello! I am passionate software engineer with over 5 years of experience specializing in full-stack web development, mobile app development, cloud computing.",
       profile_picture_url: "pp10.jpeg",
     },
     {
@@ -118,7 +118,7 @@ exports.seed = async function (knex) {
       password_hash: hashedPasswords[0],
       name: "User 11",
       self_intro:
-        " Hello! I a mpassionate software engineer with over 5 years of experience specializing in full-stack web development, mobile app development, cloud computing.",
+        " Hello! I am passionate software engineer with over 5 years of experience specializing in full-stack web development, mobile app development, cloud computing.",
       profile_picture_url: "pp11.jpeg",
     },
     {
@@ -128,7 +128,7 @@ exports.seed = async function (knex) {
       password_hash: hashedPasswords[0],
       name: "User 12",
       self_intro:
-        " Hello! I a mpassionate software engineer with over 5 years of experience specializing in full-stack web development, mobile app development, cloud computing.",
+        " Hello! I am passionate software engineer with over 5 years of experience specializing in full-stack web development, mobile app development, cloud computing.",
       profile_picture_url: "pp12.jpeg",
     },
     {

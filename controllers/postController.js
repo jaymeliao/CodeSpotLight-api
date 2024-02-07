@@ -10,7 +10,9 @@ const getPosts = async (req, res) => {
         "users.name as authorName",
         "users.profile_picture_url as authorProfileImageUrl"
       )
-      .leftJoin("users", "posts.user_id", "users.id");
+      .leftJoin("users", "posts.user_id", "users.id")
+      .orderBy('posts.updated_at', 'desc') // Sort by updated_at in descending order
+      .limit(10); // Optional: Pagination limit;
 
     // Initialize an async function to fetch and aggregate data for each post
     const fetchPostDetails = async (post) => {
