@@ -7,7 +7,8 @@ const getPosts = async (req, res) => {
       .select(
         "posts.*",
         "users.username as authorUsername",
-        "users.name as authorName"
+        "users.name as authorName",
+        "users.profile_picture_url as authorProfileImageUrl"
       )
       .leftJoin("users", "posts.user_id", "users.id");
 
@@ -55,7 +56,8 @@ const getPostsByUser = async (req, res) => {
       .select(
         "posts.*",
         "users.username as authorUsername",
-        "users.name as authorName"
+        "users.name as authorName",
+        "users.profile_picture_url as authorProfileImageUrl"
       )
       .leftJoin("users", "posts.user_id", "users.id")
       .where("posts.user_id", req.params.userId);
@@ -100,7 +102,8 @@ const getPostByPostId = async (req, res) => {
       .select(
         "posts.*",
         "users.username as authorUsername",
-        "users.name as authorName"
+        "users.name as authorName",
+        "users.profile_picture_url as authorProfileImageUrl"
       )
       .where("posts.id", req.params.postId)
       .leftJoin("users", "posts.user_id", "users.id")
