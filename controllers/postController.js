@@ -11,12 +11,23 @@ const getPosts = async (req, res) => {
         "users.profile_picture_url as authorProfileImageUrl"
       )
       .leftJoin("users", "posts.user_id", "users.id")
-      .orderBy('posts.updated_at', 'desc') // Sort by updated_at in descending order
+      .orderBy("posts.updated_at", "desc") // Sort by updated_at in descending order
       .limit(10); // Optional: Pagination limit;
 
     // Initialize an async function to fetch and aggregate data for each post
     const fetchPostDetails = async (post) => {
-      const comments = await knex("comments").where("post_id", post.id);
+      const comments = await knex("comments")
+        .join("users", "comments.user_id", "users.id")
+        .where("comments.post_id", post.id)
+        .select(
+          "comments.id",
+          "comments.content",
+          "comments.created_at",
+          "comments.updated_at",
+          "users.id as commenterUserId",
+          "users.name as commenterName",
+          "users.profile_picture_url as commenterProfilePictureUrl"
+        );
 
       const likes = await knex("likes").where("post_id", post.id);
 
@@ -66,7 +77,18 @@ const getPostsByUser = async (req, res) => {
 
     // Function to fetch and aggregate details for each post
     const fetchPostDetails = async (post) => {
-      const comments = await knex("comments").where("post_id", post.id);
+      const comments = await knex("comments")
+        .join("users", "comments.user_id", "users.id")
+        .where("comments.post_id", post.id)
+        .select(
+          "comments.id",
+          "comments.content",
+          "comments.created_at",
+          "comments.updated_at",
+          "users.id as commenterUserId",
+          "users.name as commenterName",
+          "users.profile_picture_url as commenterProfilePictureUrl"
+        );
       const likes = await knex("likes").where("post_id", post.id);
       const media = await knex("media").where("post_id", post.id);
       const tags = await knex("tags")
@@ -114,7 +136,21 @@ const getPostByPostId = async (req, res) => {
     if (!postDetails) {
       return res.status(404).json({ message: "Post not found" });
     }
-    const comments = await knex("comments").where("post_id", postDetails.id);
+
+    // Fetch comments and join with users to include commenter details
+    const comments = await knex("comments")
+      .join("users", "comments.user_id", "users.id")
+      .where("comments.post_id", postDetails.id)
+      .select(
+        "comments.id",
+        "comments.content",
+        "comments.created_at",
+        "comments.updated_at",
+        "users.id as commenterUserId",
+        "users.username as commenterUsername",
+        "users.name as commenterName",
+        "users.profile_picture_url as commenterProfilePictureUrl"
+      );
 
     const likes = await knex("likes").where("post_id", postDetails.id);
 
@@ -159,8 +195,8 @@ const addNewPost = async (req, res) => {
 
     // Insert the new post
     const postInsertResult = await knex("posts").insert({
-      content, 
-      user_id: userId
+      content,
+      user_id: userId,
     });
 
     // MySQL and mysql2 driver return the insertId of the last inserted row
@@ -185,14 +221,16 @@ const addNewPost = async (req, res) => {
           tagId = existingTag.id;
         } else {
           // If it doesn't exist, insert the new tag and get its ID
-          const newTagInsertResult = await knex("tags").insert({ name: tagName });
+          const newTagInsertResult = await knex("tags").insert({
+            name: tagName,
+          });
           tagId = newTagInsertResult[0];
         }
 
         // Associate the tag with the post
         await knex("post_tags").insert({
           post_id: postId,
-          tag_id: tagId
+          tag_id: tagId,
         });
       }
     }
