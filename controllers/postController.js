@@ -27,7 +27,8 @@ const getPosts = async (req, res) => {
           "users.id as commenterUserId",
           "users.name as commenterName",
           "users.profile_picture_url as commenterProfilePictureUrl"
-        );
+        )
+        .orderBy("comments.created_at", "desc");
 
       const likes = await knex("likes").where("post_id", post.id);
 
@@ -88,7 +89,8 @@ const getPostsByUser = async (req, res) => {
           "users.id as commenterUserId",
           "users.name as commenterName",
           "users.profile_picture_url as commenterProfilePictureUrl"
-        );
+        )
+        .orderBy("comments.created_at", "desc");
       const likes = await knex("likes").where("post_id", post.id);
       const media = await knex("media").where("post_id", post.id);
       const tags = await knex("tags")
@@ -150,7 +152,8 @@ const getPostByPostId = async (req, res) => {
         "users.username as commenterUsername",
         "users.name as commenterName",
         "users.profile_picture_url as commenterProfilePictureUrl"
-      );
+      )
+      .orderBy("comments.created_at", "desc");
 
     const likes = await knex("likes").where("post_id", postDetails.id);
 
@@ -175,7 +178,6 @@ const getPostByPostId = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
 
 const formatTagName = (tagName) => {
   // Convert # to Sharp, remove spaces and dashes, then convert to CamelCase
