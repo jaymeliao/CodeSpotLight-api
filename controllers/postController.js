@@ -135,9 +135,39 @@ const getPostByPostId = async (req, res) => {
   }
 };
 
+const addNewPost = async (req, res) => {
+  try {
+    const { content, tags } = req.body;
+    const userId = req.user.userId; // from auth
+    console.log(userId);
+    const [postId] = await knex("posts").insert({ content, user_id: userId });
+
+    if (req.files) {
+      const mediaFiles = req.files.map((file) => {
+        const mediaType = file.mimetype.startsWith("video/")
+          ? "video"
+          : "image";
+
+        return {
+          post_id: postId,
+          media_url: file.path,
+          media_type: mediaType,
+        };
+      });
+
+      await knex("media").insert(mediaFiles);
+    }
+
+    res.status(201).json({ message: "Post created successfully", postId });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 
 module.exports = {
-    getPosts,
+  getPosts,
   getPostsByUser,
   getPostByPostId,
+  addNewPost,
 };

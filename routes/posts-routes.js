@@ -1,25 +1,30 @@
 const express = require("express");
 const router = express.Router();
-const knex = require("knex")(require("../knexfile"));
-const { getPostsByUser, getPostByPostId, getPosts} = require('../controllers/postController');
+const authenticateUser = require("../middleware/auth");
+const upload = require("../utils/multer");
 
+const {
+  getPostsByUser,
+  getPostByPostId,
+  getPosts,
+  addNewPost,
+} = require("../controllers/postController");
 
+router.route("/").get(getPosts);
 
+router.post(
+  "/new-post",
+  authenticateUser,
+  upload.array("media", 5),
+  addNewPost
+);
+// maximum number 5 files are allowed
 
-router.route("/")
-  .get(getPosts);
+router.route("/:postId").get(getPostByPostId);
 
-
-router.route("/:postId")
-  .get(getPostByPostId);
-
-
-router.route("/:userId/posts")
-  .get(getPostsByUser);
+router.route("/:userId/posts").get(getPostsByUser);
 
 module.exports = router;
-
-
 
 // Route to get all posts with user's name and username
 // router.get("/", async (req, res) => {
