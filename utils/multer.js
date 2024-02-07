@@ -4,9 +4,9 @@ const path = require("path");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    let uploadDir = "uploads/";
+    let uploadDir = "uploads/profileImageAssets/";
     if (req.path.includes("/new-post")) {
-      uploadDir = "postMediaAssets/";
+      uploadDir = "uploads/postMediaAssets";
     }
     cb(null, uploadDir);
   },
@@ -20,6 +20,10 @@ const fileFilter = (req, file, cb) => {
     "image/jpeg",
     "image/png",
     "image/gif",
+    "image/avif",
+    "image/webp",  
+    "image/bmp",
+    "image/tiff"
   ];
 
   // Allow video types only for new posts
@@ -38,7 +42,7 @@ const upload = multer({ storage: storage, fileFilter: fileFilter });
 
 module.exports = upload;
 
-//================= Reference Code =======
+//================= Reference Code ==========
 
 // const storage = multer.diskStorage({
 //   destination: (req, file, cb) => {
