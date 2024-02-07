@@ -7,13 +7,13 @@ exports.seed = async function(knex) {
   // Inserts seed entries
   await knex('tags').insert([
     { name: 'Typescript' },
-    { name: 'AWS' },
+    { name: 'Aws' },
     { name: 'JavaScrpt' },
     { name: 'Photography' },
     { name: 'Lifestyle' },
     { name: 'Fitness' },
     { name: 'Education' },
-    { name: 'DIY' },
+    { name: 'Diy' },
     { name: 'Gaming' },
     { name: 'Fashion' }
   ]);

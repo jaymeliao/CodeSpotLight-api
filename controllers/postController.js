@@ -135,27 +135,61 @@ const getPostByPostId = async (req, res) => {
   }
 };
 
+
+const formatTagName = (tagName) => {
+  // Convert # to Sharp, remove spaces and dashes, then convert to CamelCase
+  return tagName
+    .replace("#", "Sharp")
+    .replace(/\s|-/g, "")
+    .replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) =>
+      index === 0 ? word.toUpperCase() : word.toLowerCase()
+    )
+    .replace(/\s+/g, "");
+};
+
 const addNewPost = async (req, res) => {
   try {
     const { content, tags } = req.body;
-    const userId = req.user.userId; // from auth
-    console.log(userId);
-    const [postId] = await knex("posts").insert({ content, user_id: userId });
+    const userId = req.user.userId; // From auth
+
+    // Insert the new post
+    const postInsertResult = await knex("posts").insert({
+      content, 
+      user_id: userId
+    });
+
+    // MySQL and mysql2 driver return the insertId of the last inserted row
+    const postId = postInsertResult[0];
 
     if (req.files) {
-      const mediaFiles = req.files.map((file) => {
-        const mediaType = file.mimetype.startsWith("video/")
-          ? "video"
-          : "image";
-
-        return {
-          post_id: postId,
-          media_url: file.path,
-          media_type: mediaType,
-        };
-      });
-
+      const mediaFiles = req.files.map((file) => ({
+        post_id: postId,
+        media_url: file.path,
+        media_type: file.mimetype.startsWith("video/") ? "video" : "image",
+      }));
       await knex("media").insert(mediaFiles);
+    }
+
+    if (tags && tags.length > 0) {
+      for (const tagName of tags.map(formatTagName)) {
+        let tagId;
+
+        // Check if the tag already exists and get its ID
+        const existingTag = await knex("tags").where({ name: tagName }).first();
+        if (existingTag) {
+          tagId = existingTag.id;
+        } else {
+          // If it doesn't exist, insert the new tag and get its ID
+          const newTagInsertResult = await knex("tags").insert({ name: tagName });
+          tagId = newTagInsertResult[0];
+        }
+
+        // Associate the tag with the post
+        await knex("post_tags").insert({
+          post_id: postId,
+          tag_id: tagId
+        });
+      }
     }
 
     res.status(201).json({ message: "Post created successfully", postId });
