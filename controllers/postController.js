@@ -194,6 +194,7 @@ const formatTagName = (tagName) => {
 const addNewPost = async (req, res) => {
   try {
     const { content, tags } = req.body;
+
     const userId = req.user.userId; // From auth
 
     // Insert the new post
@@ -201,8 +202,8 @@ const addNewPost = async (req, res) => {
       content,
       user_id: userId,
     });
+    console.log(postInsertResult); 
 
-    // MySQL and mysql2 driver return the insertId of the last inserted row
     const postId = postInsertResult[0];
 
     if (req.files) {
@@ -211,11 +212,23 @@ const addNewPost = async (req, res) => {
         media_url: file.path,
         media_type: file.mimetype.startsWith("video/") ? "video" : "image",
       }));
-      await knex("media").insert(mediaFiles);
+      console.log(mediaFiles); // Check the structure and content of mediaFiles
+
+      if (mediaFiles.length > 0) {
+        await knex("media").insert(mediaFiles);
+      }
     }
 
-    if (tags && tags.length > 0) {
-      for (const tagName of tags.map(formatTagName)) {
+
+
+    let processedTags = [];
+    if (typeof tags === 'string') {
+      processedTags.push(tags); // Single tag case
+    } else if (Array.isArray(tags)) {
+      processedTags = [...tags]; // Multiple tags case
+    }
+    if (processedTags && processedTags.length > 0) {
+      for (const tagName of processedTags.map(formatTagName)) {
         let tagId;
 
         // Check if the tag already exists and get its ID

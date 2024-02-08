@@ -20,7 +20,7 @@ router.route("/").get(getPosts);
 router.post(
   "/new-post",
   authenticateUser,
-  upload.array("media", 5),
+  upload.array("media", 5), // field name is media
   addNewPost
 );
 router.get("/liked-posts", authenticateUser, getLikedPosts);
@@ -30,5 +30,9 @@ router.get('/tag/:tagName', getPostsByTagName);
 
 router.route("/:postId").get(getPostByPostId);
 router.route("/:userId/posts").get(getPostsByUser);
+
+
+
+
 
 module.exports = router;
