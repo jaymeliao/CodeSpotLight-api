@@ -6,7 +6,7 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     let uploadDir = "uploads/profileImageAssets/";
     if (req.path.includes("/new-post")) {
-      uploadDir = "uploads/postMediaAssets";
+      uploadDir = "uploads/postMediaAssets/";
     }
     cb(null, uploadDir);
   },

@@ -209,7 +209,7 @@ const addNewPost = async (req, res) => {
     if (req.files) {
       const mediaFiles = req.files.map((file) => ({
         post_id: postId,
-        media_url: file.path,
+        media_url: file.filename, //file.path : will be uploads/postMediaAssest/<filename>
         media_type: file.mimetype.startsWith("video/") ? "video" : "image",
       }));
       console.log(mediaFiles); // Check the structure and content of mediaFiles
