@@ -6,6 +6,7 @@ const userRoutes = require("./routes/users-routes");
 const authRoutes = require("./routes/auth-routes");
 const postRoutes = require("./routes/posts-routes");
 const commentRoutes = require("./routes/comments-routes");
+const tagRoutes = require("./routes/tags-routes");
 //app.use('/', express.static('uploads'));
 app.use("/uploads", express.static("uploads"));
 
@@ -15,6 +16,7 @@ app.use("/", userRoutes);
 app.use("/auth", authRoutes);
 app.use("/posts", postRoutes);
 app.use("/comments", commentRoutes);
+app.use("/tags", tagRoutes);
 
 const PORT = process.env.PORT || 5050;
 app.listen(PORT, () => {

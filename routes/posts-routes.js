@@ -9,7 +9,8 @@ const {
   getPosts,
   addNewPost,
   getLikedPosts,
-  getMyPosts
+  getMyPosts,
+  getPostsByTagName
 } = require("../controllers/postController");
 
 
@@ -24,6 +25,7 @@ router.post(
 );
 router.get("/liked-posts", authenticateUser, getLikedPosts);
 router.get("/my-posts", authenticateUser, getMyPosts);
+router.get('/tag/:tagName', getPostsByTagName); 
 
 
 router.route("/:postId").get(getPostByPostId);

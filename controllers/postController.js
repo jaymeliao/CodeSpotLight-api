@@ -1,3 +1,4 @@
+
 const knex = require("knex")(require("../knexfile"));
 
 const getPosts = async (req, res) => {
@@ -380,11 +381,80 @@ const getMyPosts = async (req, res) => {
   }
 };
 
+const getPostsByTagName = async (req, res) => {
+  try {
+    const tagName = req.params.tagName;
+
+    // First, find the tag by name to get its ID
+    const tag = await knex("tags").where("name", tagName).first();
+    if (!tag) {
+      return res.status(404).json({ message: "Tag not found" });
+    }
+
+    // Then, find all posts associated with this tag ID
+    const posts = await knex("posts")
+      .join("post_tags", "posts.id", "post_tags.post_id")
+      .join("users", "posts.user_id", "users.id")
+      .where("post_tags.tag_id", tag.id)
+      .select(
+        "posts.*",
+        "users.username as authorUsername",
+        "users.name as authorName",
+        "users.profile_picture_url as authorProfileImageUrl"
+      )
+      .orderBy("posts.updated_at", "desc");
+
+    const fetchPostDetails = async (post) => {
+      const comments = await knex("comments")
+        .join("users", "comments.user_id", "users.id")
+        .where("comments.post_id", post.id)
+        .select(
+          "comments.id",
+          "comments.content",
+          "comments.created_at",
+          "comments.updated_at",
+          "users.id as commenterUserId",
+          "users.name as commenterName",
+          "users.profile_picture_url as commenterProfilePictureUrl"
+        )
+        .orderBy("comments.created_at", "desc");
+
+      const likes = await knex("likes").where("post_id", post.id);
+
+      const media = await knex("media").where("post_id", post.id);
+
+      const tags = await knex("tags")
+        .join("post_tags", "tags.id", "post_tags.tag_id")
+        .where("post_tags.post_id", post.id)
+        .select("tags.name");
+
+      return {
+        ...post,
+        comments,
+        likes,
+        media,
+        tags: tags.map((tag) => tag.name),
+      };
+    };
+    let results = [];
+    for (const post of posts) {
+      const detailedPost = await fetchPostDetails(post);
+      results.push(detailedPost);
+    }
+
+    res.status(200).json(results);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 module.exports = {
   getPosts,
   getPostsByUser,
   getPostByPostId,
   addNewPost,
   getLikedPosts,
-  getMyPosts
+  getMyPosts,
+  getPostsByTagName
 };
