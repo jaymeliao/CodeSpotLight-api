@@ -8,8 +8,11 @@ const {
   getPostByPostId,
   getPosts,
   addNewPost,
-  getLikedPosts
+  getLikedPosts,
+  getMyPosts
 } = require("../controllers/postController");
+
+
 
 router.route("/").get(getPosts);
 
@@ -19,14 +22,11 @@ router.post(
   upload.array("media", 5),
   addNewPost
 );
-
 router.get("/liked-posts", authenticateUser, getLikedPosts);
+router.get("/my-posts", authenticateUser, getMyPosts);
 
-// maximum number 5 files are allowed
 
 router.route("/:postId").get(getPostByPostId);
-
 router.route("/:userId/posts").get(getPostsByUser);
 
 module.exports = router;
-

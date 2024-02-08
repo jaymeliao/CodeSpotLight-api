@@ -244,11 +244,9 @@ const addNewPost = async (req, res) => {
   }
 };
 
-// get posted liked by me
 const getLikedPosts = async (req, res) => {
-  const userId = req.user.userId; // Assuming this is set by your authentication middleware
+  const userId = req.user.userId;
   try {
-    // First, get the post IDs liked by the user
     const likedPostsIds = await knex("likes")
       .where({ user_id: userId })
       .select("post_id");
@@ -263,11 +261,75 @@ const getLikedPosts = async (req, res) => {
 
       //fliter the po
       .whereIn(
-       "posts.id",
+        "posts.id",
         likedPostsIds.map((lp) => lp.post_id)
       )
       .leftJoin("users", "posts.user_id", "users.id")
       .orderBy("posts.updated_at", "desc"); // Sort by updated_at in descending order
+
+    // Initialize an async function to fetch and aggregate data for each post
+    const fetchPostDetails = async (post) => {
+      const comments = await knex("comments")
+        .join("users", "comments.user_id", "users.id")
+        .where("comments.post_id", post.id)
+        .select(
+          "comments.id",
+          "comments.content",
+          "comments.created_at",
+          "comments.updated_at",
+          "users.id as commenterUserId",
+          "users.name as commenterName",
+          "users.profile_picture_url as commenterProfilePictureUrl"
+        )
+        .orderBy("comments.created_at", "desc");
+
+      const likes = await knex("likes").where("post_id", post.id);
+
+      const media = await knex("media").where("post_id", post.id);
+
+      const tags = await knex("tags")
+        .join("post_tags", "tags.id", "post_tags.tag_id")
+        .where("post_tags.post_id", post.id)
+        .select("tags.name");
+
+      return {
+        ...post,
+        comments,
+        likes,
+        media,
+        tags: tags.map((tag) => tag.name),
+      };
+    };
+    //===================================
+    let results = [];
+    for (const post of posts) {
+      const detailedPost = await fetchPostDetails(post); // Fetch details for each post sequentially
+      results.push(detailedPost); // Add the detailed post to the results array
+    }
+    // or Use Promise.all to fetch details for all posts concurrently
+    //const results = await Promise.all(posts.map(fetchPostDetails));
+
+    res.status(200).json(results);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+const getMyPosts = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+
+    const posts = await knex("posts")
+      .select(
+        "posts.*",
+        "users.username as authorUsername",
+        "users.name as authorName",
+        "users.profile_picture_url as authorProfileImageUrl"
+      )
+      .leftJoin("users", "posts.user_id", "users.id")
+      .where("posts.user_id", userId) // Filter posts by the logged-in user's ID
+      .orderBy("posts.updated_at", "desc");
 
     // Initialize an async function to fetch and aggregate data for each post
     const fetchPostDetails = async (post) => {
@@ -323,5 +385,6 @@ module.exports = {
   getPostsByUser,
   getPostByPostId,
   addNewPost,
-  getLikedPosts
+  getLikedPosts,
+  getMyPosts
 };
