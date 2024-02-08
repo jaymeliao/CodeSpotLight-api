@@ -1,4 +1,5 @@
 node_modules/
 uploads/profileImageAssets
+uploads/postMediaAssets
 #.env will comment this
 .DS_Store
